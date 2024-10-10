@@ -1,0 +1,23 @@
+service:
+  meta:
+    name: lg-demolens
+    namespace: default
+    minReplicas: 1
+    maxReplicas: 5
+  repo:
+    image: devlgciacr.azurecr.io/lglens
+    tag: v4
+  service:
+    type: ClusterIP
+    port: 80
+    targetport: 8080
+  resources:
+    requests:
+      memory: 1000
+      cpu: 250
+    limits:
+      memory: 2000
+      cpu: 500
+    targetAverageUtilization: 70
+  nodeselector: lindev
+

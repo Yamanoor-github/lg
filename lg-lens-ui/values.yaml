@@ -1,0 +1,22 @@
+service:
+  meta:
+    name: lg-lens-ui
+    namespace: default
+    minReplicas: 1
+    maxReplicas: 5
+  repo:
+    image: devlgciacr.azurecr.io/lg-lens-ui
+    tag: 24106
+  service:
+    type: ClusterIP
+    port: 80
+    targetport: 80
+  resources:
+    requests:
+      memory: 1000
+      cpu: 500
+    limits:
+      memory: 1500
+      cpu: 500
+    targetAverageUtilization: 70
+  nodeselector: lindev

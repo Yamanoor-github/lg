@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.service.meta.name }}
+  namespace: {{ .Values.service.meta.namespace }}
+  labels:
+    app: {{ .Values.service.meta.name }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Values.service.meta.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.service.meta.name }}
+    spec:
+      nodeSelector:
+        agentpool: {{ .Values.service.nodeselector }}
+      tolerations:
+        - key: "kubernetes.azure.com/scalesetpriority"
+          operator: "Equal"
+          value: "spot"
+          effect: "NoSchedule"
+      containers:
+      - image: {{ .Values.service.repo.image }}:{{ .Values.service.repo.tag }}
+        name: {{ .Values.service.meta.name }}
+        ports:
+        - containerPort: {{ .Values.service.service.targetport }}
+          name: http
+        resources:
+          requests:
+            memory: {{ .Values.service.resources.requests.memory }}Mi
+            cpu: {{ .Values.service.resources.requests.cpu }}m
+          limits:
+            memory: {{ .Values.service.resources.limits.memory }}Mi
+            cpu: {{ .Values.service.resources.limits.cpu }}m
+
+
